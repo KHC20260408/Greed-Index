@@ -5,6 +5,10 @@ on:
     - cron: '0 1 * * *' # 每日 01:00 UTC
   workflow_dispatch:
 
+# 立即在整個 workflow 層級啟用 Node 24（提前測試相容性）
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   scrape:
     runs-on: ubuntu-latest
