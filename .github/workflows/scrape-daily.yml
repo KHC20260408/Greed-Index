@@ -1,12 +1,13 @@
 name: Daily Scrape CNN Fear & Greed Index
 
-# 確保 workflow 有寫入 repo 的權限（用 GITHUB_TOKEN）
+# 明確給予工作流程寫入 repo 的權限（確保��以用 GITHUB_TOKEN commit/push）
 permissions:
   contents: write
 
+# 立即以 Node.js 24 執行 JavaScript actions（提前測試相容性）
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
-  # 若發生相容性問題，暫時啟用下列為 'true'（短期救援，不建議長期使用）
+  # 若遇到相容性導致 step 失敗，臨時開啟下面這行以允許 Node20（短期救援）
   # ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: 'true'
 
 on:
