@@ -1,15 +1,13 @@
 name: Daily Scrape CNN Fear & Greed Index
 
-# 明確給予工作流程寫入 repo 的權限（確保可以用 GITHUB_TOKEN commit/push）
 permissions:
   contents: write
 
-# 同時：
-#  - 以 Node.js 24 試跑（建議）
-#  - 若 Node24 相容性有問題，臨時���許回退使用 Node20（短期救援）
 env:
+  # 以 Node.js 24 試跑（建議）
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
-  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: 'true'  # 臨時回退（短期救援）— 完成升級後請移除
+  # 臨時回退允許使用 Node20（短期救援），升級成功後請移除或設為 'false'
+  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: 'true'
 
 on:
   schedule:
@@ -27,12 +25,22 @@ jobs:
           persist-credentials: true
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
 
+      - name: Show Python environment info
+        run: |
+          python -V
+          which python || command -v python
+          python -m pip --version
+
       - name: Install dependencies
-        run: python -m pip install --upgrade pip && pip install -r requirements.txt
+        run: python -m pip install --upgrade pip && python -m pip install -r requirements.txt
+
+      - name: Verify installed packages
+        run: |
+          python -c "import requests, bs4; print('requests', requests.__version__); print('bs4', bs4.__version__)"
 
       - name: Run scraper
         run: python greed-index-scraper.py
