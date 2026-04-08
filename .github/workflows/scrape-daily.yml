@@ -1,13 +1,18 @@
 name: Daily Scrape CNN Fear & Greed Index
 
+# 確保 workflow 有寫入 repo 的權限（用 GITHUB_TOKEN）
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  # 若發生相容性問題，暫時啟用下列為 'true'（短期救援，不建議長期使用）
+  # ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: 'true'
+
 on:
   schedule:
     - cron: '0 1 * * *' # 每日 01:00 UTC
   workflow_dispatch:
-
-# 立即在整個 workflow 層級啟用 Node 24（提前測試相容性）
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
 
 jobs:
   scrape:
